@@ -249,7 +249,18 @@ function App() {
                 {activeQuery && (<>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                     {/* Left: Trend Chart */}
-                    <div className="h-auto md:h-[360px]">
+                    <div className="h-auto md:h-[360px] relative">
+                      {/* Reset Button for Trend Chart Drill-down */}
+                      {filters.yearRange && filters.yearRange[0] === filters.yearRange[1] && (
+                        <button
+                          onClick={() => setFilters(prev => ({ ...prev, yearRange: [2015, options.maxYear || 2025] }))}
+                          className="absolute top-2 right-2 z-10 px-2 py-1 bg-white/90 border border-slate-200 rounded shadow-sm text-xs text-slate-500 hover:text-primary-600 hover:bg-slate-50 transition-colors flex items-center gap-1"
+                        >
+                          <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
+                          解除
+                        </button>
+                      )}
+
                       {trendData.length > 0 ? (
                         <TrendChart
                           data={trendData}

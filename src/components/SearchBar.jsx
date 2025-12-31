@@ -15,7 +15,7 @@ export function SearchBar({ value, onChange, onSearch }) {
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="キーワードで検索 (例: 福祉, まちづくり...)"
+                    placeholder="あなたの気になるキーワード (例: 待機児童, 再開発...)"
                     className="w-full pl-6 pr-14 py-4 bg-white border border-slate-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-lg transition-all"
                 />
                 <button
