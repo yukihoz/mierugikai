@@ -6,7 +6,7 @@ import { ResultList } from './components/ResultList';
 import { TrendChart } from './components/TrendChart';
 import { ContextModal } from './components/ContextModal';
 import { Pagination } from './components/Pagination';
-import { AIAgent } from './components/AIAgent';
+// import { AIAgent } from './components/AIAgent';
 import { TopSpeakers } from './components/TopSpeakers';
 import { RelatedKeywords } from './components/RelatedKeywords';
 import { ArrowDown, ArrowUp } from 'lucide-react';
@@ -372,25 +372,6 @@ function App() {
         正確性を期しておりますが正確な情報は中央区議会のwebサイトをご覧ください。
       </footer>
 
-      <AIAgent
-        data={sortedData}
-        filters={filters}
-        query={activeQuery}
-        onFilterChange={(key, value) => {
-          if (key === 'reset') {
-            setFilters({ committee: '', category: '', yearRange: [2020, 2025], sort: 'desc' });
-            setActiveQuery('');
-          } else if (key === 'query') {
-            setActiveQuery(value);
-            setFilters(prev => ({ ...prev, yearRange: null, committee: '', category: '' }));
-          } else if (key === 'year') {
-            const y = parseInt(value);
-            setFilters(prev => ({ ...prev, yearRange: [y, y] }));
-          } else {
-            setFilters(prev => ({ ...prev, [key]: value }));
-          }
-        }}
-      />
     </div>
   );
 }
