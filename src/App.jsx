@@ -147,35 +147,10 @@ function App() {
     setCurrentPage(1);
   }, [activeQuery, filters]);
 
-  // Trend Data preparation (Ignores Year Range for context)
+  // Trend Data preparation
   const trendData = useMemo(() => {
-    // Filter by everything INCLUDING yearRange (as requested by user)
-    const trendBase = data.filter(item => {
-      if (activeQuery) {
-        const normalize = (str) => str ? str.normalize('NFKC').toLowerCase() : '';
-        const q = normalize(activeQuery);
-
-        const matchBody = normalize(item.body).includes(q);
-        const matchSpeaker = normalize(item.speaker).includes(q);
-        const matchId = normalize(item.id).includes(q);
-
-        if (!matchBody && !matchSpeaker && !matchId) return false;
-      }
-
-      // Range Check
-      if (filters.yearRange) {
-        const [start, end] = filters.yearRange;
-        const itemYear = parseInt(item.year);
-        if (itemYear < start || itemYear > end) return false;
-      }
-
-      if (filters.committee && item.type !== filters.committee) return false;
-      if (filters.category && item.category !== filters.category) return false;
-      return true;
-    });
-
     const counts = {};
-    trendBase.forEach(item => {
+    filteredData.forEach(item => {
       const year = item.year;
       if (year) counts[year] = (counts[year] || 0) + 1;
     });
@@ -184,7 +159,7 @@ function App() {
       year,
       count: counts[year]
     }));
-  }, [data, activeQuery, filters.committee, filters.category]);
+  }, [filteredData]);
 
   // Pagination Logic
   const totalPages = Math.ceil(sortedData.length / ITEMS_PER_PAGE);
