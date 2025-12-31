@@ -284,7 +284,6 @@ function App() {
                         onKeywordClick={(word) => {
                           setSearchTerm(word);
                           setActiveQuery(word);
-                          setFilters(prev => ({ ...prev, yearRange: null, committee: '', category: '' }));
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
                       />
