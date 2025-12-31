@@ -3,7 +3,7 @@ const path = require('path');
 
 const inputFile = path.join(__dirname, '../public/data/gijiroku.json');
 const outputDir = path.join(__dirname, '../public/data/');
-const CHUNK_SIZE = 40000; // Adjust as needed to keep under 100MB (approx 50-60MB)
+const CHUNK_SIZE = 10000; // Cloudflare limit is 25MB. 10k is approx 15MB.
 
 try {
     console.log(`Reading ${inputFile}...`);

@@ -13,8 +13,8 @@ export const loadData = async (url) => {
                 return response.json();
             };
 
-            // Fetch up to 8 parts in parallel (expecting parts 0, 1, 2, 3...)
-            const promises = Array.from({ length: 8 }, (_, i) => fetchPart(i));
+            // Fetch up to 20 parts in parallel (expecting parts 0 to ~15)
+            const promises = Array.from({ length: 20 }, (_, i) => fetchPart(i));
             const results = await Promise.all(promises);
 
             const allRecords = results.filter(r => r !== null).flat();
