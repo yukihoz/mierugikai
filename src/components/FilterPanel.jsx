@@ -21,7 +21,7 @@ export function FilterPanel({
     const hasActiveFilters =
         Boolean(filters.committee) ||
         Boolean(filters.category) ||
-        (filters.yearRange && (filters.yearRange[0] !== options.minYear || filters.yearRange[1] !== options.maxYear));
+        (filters.yearRange && (filters.yearRange[0] !== 2015 || filters.yearRange[1] !== options.maxYear));
 
     // Ensure we have min/max for the slider
     const minYear = options.minYear || 2003;
