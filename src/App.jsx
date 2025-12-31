@@ -35,7 +35,7 @@ function App() {
   const [filters, setFilters] = useState({
     committee: '',
     category: '', // Changed from speaker
-    yearRange: null, // Default: All years (null)
+    yearRange: [2015, 2025], // Default: 2015-2025
     sort: 'desc' // Default: Newest first
   });
 

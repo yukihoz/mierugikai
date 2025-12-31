@@ -52,7 +52,7 @@ export function FilterPanel({
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    setFilters({ committee: '', category: '', yearRange: null, sort: 'desc' });
+                                    setFilters({ committee: '', category: '', yearRange: [2015, options.maxYear || 2025], sort: 'desc' });
                                 }}
                                 className="text-sm text-slate-500 hover:text-red-500 flex items-center gap-1 transition-colors px-2 py-1 rounded hover:bg-red-50 cursor-pointer"
                             >
