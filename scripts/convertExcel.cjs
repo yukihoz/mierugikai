@@ -22,7 +22,7 @@ try {
 
     // Convert to JSON first to handle headers and data cleanly
     // defval: '' satisfies the "fill empty cells" need? Or let's handle specifically.
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '', raw: false, dateNF: 'yyyy/mm/dd' });
 
     console.log(`Rows found: ${jsonData.length}`);
 
