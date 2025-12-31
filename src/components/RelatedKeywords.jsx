@@ -9,7 +9,7 @@ const STOP_WORDS = new Set([
     'について', 'において', 'にて', 'により', 'による', '的', 'だ', 'です', 'ます', 'ない', 'あり', 'おり', 'られ', 'よう', '点'
 ]);
 
-export function TopicCloud({ data, query, onKeywordClick }) {
+export function RelatedKeywords({ data, query, onKeywordClick }) {
     const words = useMemo(() => {
         if (!data || data.length === 0) return [];
 

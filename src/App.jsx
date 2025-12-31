@@ -8,7 +8,7 @@ import { ContextModal } from './components/ContextModal';
 import { Pagination } from './components/Pagination';
 import { AIAgent } from './components/AIAgent';
 import { TopSpeakers } from './components/TopSpeakers';
-import { TopicCloud } from './components/TopicCloud';
+import { RelatedKeywords } from './components/RelatedKeywords';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 20;
@@ -228,7 +228,7 @@ function App() {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-extrabold text-slate-800">
-              会議録検索
+              みえる議会(仮) - 中央区
             </h1>
           </div>
           <div className="text-right">
@@ -296,14 +296,14 @@ function App() {
                     </div>
                   </div>
 
-                  {/* Topic Cloud Section */}
+                  {/* Use RelatedKeywords instead of TopicCloud */}
                   <div className="mb-12">
                     <h3 className="text-lg font-bold text-slate-800 mb-4 px-2 flex items-center gap-2">
                       <span className="w-1 h-6 bg-blue-400 rounded-full"></span>
                       関連キーワード (Top 10)
                     </h3>
                     <div className="border border-slate-100 rounded-xl shadow-sm bg-white">
-                      <TopicCloud
+                      <RelatedKeywords
                         data={filteredData}
                         query={activeQuery}
                         onKeywordClick={(word) => {
@@ -365,6 +365,12 @@ function App() {
           </>
         )}
       </main>
+
+      <footer className="max-w-5xl mx-auto px-6 py-8 text-center text-xs text-slate-400">
+        このサイトは中央区議会の議事録データを元に、ほづみゆうきが作成したものです。
+        <br />
+        正確性を期しておりますが正確な情報は中央区議会のwebサイトをご覧ください。
+      </footer>
 
       <AIAgent
         data={sortedData}
