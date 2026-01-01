@@ -58,19 +58,21 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
                             >
                                 <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
                                     {/* Left: Speaker Info */}
+                                    {/* Left: Speaker Info */}
                                     <div className="flex items-center gap-2 text-slate-900">
-                                        <User size={20} className="text-slate-400" />
+                                        {/* Icon Removed (Moved inside badge) */}
 
                                         {/* Role Badge */}
                                         {item.content_classification && (
                                             <span className={clsx(
-                                                "px-2 py-0.5 rounded text-[10px] font-bold",
+                                                "px-2 py-1 rounded text-xs font-bold flex items-center gap-1",
                                                 item.content_classification.includes('理事者') ? "bg-purple-100 text-purple-700" :
                                                     item.content_classification.includes('委員長') ? "bg-orange-100 text-orange-700" :
                                                         item.content_classification.includes('議長') ? "bg-amber-100 text-amber-700" :
                                                             item.content_classification.includes('議員') ? "bg-green-100 text-green-700" :
                                                                 "bg-blue-100 text-blue-700"
                                             )}>
+                                                <User size={12} />
                                                 {item.content_classification}
                                             </span>
                                         )}
@@ -90,6 +92,9 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
                                 </div>
                                 <div className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">
                                     <HighlightedText text={item.body} highlight={query} />
+                                </div>
+                                <div className="mt-2 text-left pt-2 border-t border-slate-100/50">
+                                    <span className="text-[10px] text-slate-300 font-mono tracking-wider">ID: {item.id}</span>
                                 </div>
                             </div>
                         );
