@@ -42,8 +42,8 @@ function App() {
   // Load Data
   useEffect(() => {
     Promise.all([
-      loadData('/data/gijiroku.json'),
-      loadData('/data/speaker_meta.json').catch(err => {
+      loadData(`${import.meta.env.BASE_URL}data/gijiroku.json`),
+      loadData(`${import.meta.env.BASE_URL}data/speaker_meta.json`).catch(err => {
         console.warn("Failed to load speaker meta:", err);
         return {};
       })
@@ -203,7 +203,7 @@ function App() {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <h1 className="flex items-center">
-              <img src="/mielogo.png" alt="みえる議会(仮) - 中央区" className="h-10 md:h-12 w-auto object-contain" />
+              <img src={`${import.meta.env.BASE_URL}mielogo.png`} alt="みえる議会(仮) - 中央区" className="h-10 md:h-12 w-auto object-contain" />
             </h1>
           </div>
           <div className="text-right">

@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "rm -rf dist/models && gh-pages -d dist"
   },
   "homepage": "https://yukihoz.github.io/mierugikai/",
   "dependencies": {
