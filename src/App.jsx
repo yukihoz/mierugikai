@@ -202,8 +202,11 @@ function App() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="flex items-center">
+            <h1 className="flex items-center gap-3">
               <img src={`${import.meta.env.BASE_URL}mielogo.png`} alt="みえる議会(仮) - 中央区" className="h-10 md:h-12 w-auto object-contain" />
+              <span className="text-xl md:text-2xl font-extrabold text-slate-800 whitespace-nowrap">
+                みえる議会(仮) - 中央区
+              </span>
             </h1>
           </div>
           <div className="text-right">
