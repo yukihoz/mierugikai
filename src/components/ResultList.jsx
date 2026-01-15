@@ -60,12 +60,12 @@ export function ResultList({ results, query, onContextClick }) {
                     <div className="flex items-center justify-between pt-2 border-t border-slate-50">
                         {/* Meta Info (Bottom Left) */}
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="flex items-center gap-1 text-xs text-slate-500">
+                            <span className="flex items-center gap-1 text-[10px] text-slate-500">
                                 <Calendar size={12} />
                                 {item.date} <span className="text-slate-300">|</span> {item.type}
                             </span>
                             {item.category && (
-                                <span className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                <span className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
                                     <User size={12} className="text-slate-400" />
                                     {item.category}
                                 </span>
@@ -78,9 +78,9 @@ export function ResultList({ results, query, onContextClick }) {
                                 e.stopPropagation();
                                 onContextClick(item);
                             }}
-                            className="relative z-10 flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-700 hover:bg-primary-100 rounded-lg text-sm font-bold transition-colors shadow-sm"
+                            className="relative z-10 flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-700 hover:bg-primary-100 rounded-lg text-xs font-bold transition-colors shadow-sm shrink-0"
                         >
-                            <ExternalLink size={16} />
+                            <ExternalLink size={14} />
                             文脈を表示
                         </button>
                     </div>
