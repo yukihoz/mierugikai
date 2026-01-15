@@ -9,9 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "rm -rf dist/models && gh-pages -d dist"
+    "deploy": "rm -rf dist/models && wrangler pages deploy dist --project-name mierugikai"
   },
-  "homepage": "https://yukihoz.github.io/mierugikai/",
   "dependencies": {
     "@mlc-ai/web-llm": "^0.2.80",
     "clsx": "^2.1.1",
