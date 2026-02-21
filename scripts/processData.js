@@ -12,7 +12,7 @@ const inputFiles = [
     // { path: path.join(__dirname, '../data/kugikai_data2011-2025mid-FIX.csv'), encoding: 'utf8' },
     // Maintenance CSV
     // Maintenance CSV
-    { path: path.join(__dirname, '../data/gijiroku_export_converted.csv'), encoding: 'utf8' }
+    { path: path.join(__dirname, '../data/combined_master_20260131.csv'), encoding: 'utf8' }
 ];
 const outputFile = path.join(__dirname, '../public/data/gijiroku.json');
 
@@ -105,16 +105,33 @@ async function processData() {
                 year: year,
                 date: dateStr,
                 type: record['委員会/本会議名称'] || record['委員会名称'] || '',
-                content_classification: record['内容分類'] || ''
+                content_classification: record['内容分類'] || '',
+                is_unofficial: record['is_unofficial'] === '1' || record['is_unofficial'] === 'true'
             };
         });
 
-        // Write JSON
-        fs.writeFileSync(outputFile, JSON.stringify(optimizedData));
-        console.log(`Written to: ${outputFile}`);
+        // Sort by date descending (newest first)
+        optimizedData.sort((a, b) => {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            if (isNaN(dateA) && isNaN(dateB)) return 0;
+            if (isNaN(dateA)) return 1;
+            if (isNaN(dateB)) return -1;
+            return dateB - dateA;
+        });
 
-        const stats = fs.statSync(outputFile);
-        console.log(`Size: ${(stats.size / 1024 / 1024).toFixed(2)} MB`);
+        // Write Preview JSON (includes unofficial data)
+        const previewFile = path.join(__dirname, '../public/data/gijiroku_preview.json');
+        fs.writeFileSync(previewFile, JSON.stringify(optimizedData));
+        console.log(`Written to: ${previewFile}`);
+
+        // Write Public JSON (excludes unofficial data)
+        const publicData = optimizedData.filter(d => !d.is_unofficial);
+        fs.writeFileSync(outputFile, JSON.stringify(publicData));
+        console.log(`Written to: ${outputFile} (Public, excluded unofficial)`);
+
+        console.log(`Size preview: ${(fs.statSync(previewFile).size / 1024 / 1024).toFixed(2)} MB`);
+        console.log(`Size public: ${(fs.statSync(outputFile).size / 1024 / 1024).toFixed(2)} MB`);
 
     } catch (error) {
         console.error("Error processing data:", error);

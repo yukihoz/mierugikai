@@ -1,9 +1,19 @@
-import { useMemo } from 'react';
-import { Calendar, User, MessageSquare, ExternalLink } from 'lucide-react';
+import { useState } from 'react';
+import { Calendar, User, MessageSquare, ExternalLink, Link as LinkIcon, Check } from 'lucide-react';
 import clsx from 'clsx';
 import { HighlightedText } from './HighlightedText';
 
 export function ResultList({ results, query, onContextClick }) {
+    const [copiedId, setCopiedId] = useState(null);
+
+    const handleCopy = (e, id) => {
+        e.stopPropagation();
+        const url = `${window.location.origin}${import.meta.env.BASE_URL}${id}`;
+        navigator.clipboard.writeText(url);
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000);
+    };
+
     if (results.length === 0) {
         return (
             <div className="text-center py-20 text-slate-400">
@@ -21,13 +31,16 @@ export function ResultList({ results, query, onContextClick }) {
             {results.map((item, index) => (
                 <div
                     key={index}
-                    className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow group relative"
+                    className={clsx(
+                        "p-6 rounded-xl shadow-sm border hover:shadow-md transition-shadow group relative",
+                        item.is_unofficial ? "bg-slate-100 border-slate-200" : "bg-white border-slate-100"
+                    )}
                 >
                     <div className="flex justify-between items-start mb-3">
                         {/* Upper Row: Speaker Info */}
                         <div className="flex items-center gap-2 text-slate-900">
                             {/* Role Badge */}
-                            {item.content_classification && (
+                            {item.content_classification && item.content_classification !== '0' && (
                                 <span className={clsx(
                                     "px-2 py-1 rounded text-xs font-bold flex items-center gap-1",
                                     item.content_classification.includes('理事者') ? "bg-purple-100 text-purple-700" :
@@ -72,17 +85,32 @@ export function ResultList({ results, query, onContextClick }) {
                             )}
                         </div>
 
-                        <button
-                            type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onContextClick(item);
-                            }}
-                            className="relative z-10 flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-700 hover:bg-primary-100 rounded-lg text-xs font-bold transition-colors shadow-sm shrink-0"
-                        >
-                            <ExternalLink size={14} />
-                            文脈を表示
-                        </button>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={(e) => handleCopy(e, item.id)}
+                                className={clsx(
+                                    "relative z-10 flex items-center justify-center p-2 border rounded-lg transition-colors shadow-sm shrink-0",
+                                    copiedId === item.id
+                                        ? "bg-green-50 border-green-200"
+                                        : "bg-slate-50 border-slate-200 hover:bg-slate-100"
+                                )}
+                                title={copiedId === item.id ? "コピー完了" : "この発言のURLをコピー"}
+                            >
+                                {copiedId === item.id ? <Check size={16} className="text-green-600" /> : <LinkIcon size={16} className="text-slate-500" />}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onContextClick(item);
+                                }}
+                                className="relative z-10 flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-700 hover:bg-primary-100 rounded-lg text-xs font-bold transition-colors shadow-sm shrink-0"
+                            >
+                                <ExternalLink size={14} />
+                                文脈を表示
+                            </button>
+                        </div>
                     </div>
                 </div>
             ))}

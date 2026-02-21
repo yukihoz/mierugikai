@@ -5,6 +5,7 @@ export function TopSpeakers({ data, onCategoryClick, currentCategory }) {
 
     // Calculate Top Speakers (using Category as requested)
     const speakerCounts = data.reduce((acc, item) => {
+        if (item.category === '0') return acc;
         const name = item.category || '不明'; // Use category
         acc[name] = (acc[name] || 0) + 1;
         return acc;

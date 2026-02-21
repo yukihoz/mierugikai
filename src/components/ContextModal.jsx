@@ -1,11 +1,20 @@
-import { useRef, useEffect } from 'react';
-import { X, Calendar, User } from 'lucide-react';
+import { useRef, useEffect, useState } from 'react';
+import { X, Calendar, User, Link as LinkIcon, Check } from 'lucide-react';
 import clsx from 'clsx';
 import { HighlightedText } from './HighlightedText';
 
 export function ContextModal({ isOpen, onClose, selectedItem, contextItems, query }) {
     const itemRefs = useRef({});
     const scrollContainerRef = useRef(null);
+    const [copiedId, setCopiedId] = useState(null);
+
+    const handleCopy = (e, id) => {
+        e.stopPropagation();
+        const url = `${window.location.origin}${import.meta.env.BASE_URL}${id}`;
+        navigator.clipboard.writeText(url);
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000);
+    };
 
     useEffect(() => {
         if (isOpen && selectedItem && itemRefs.current[selectedItem.body]) {
@@ -20,8 +29,14 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
     if (!isOpen || !selectedItem) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+            >
                 {/* Header */}
                 <div className="p-4 border-b border-slate-100 flex items-start justify-between bg-slate-50">
                     <div>
@@ -53,7 +68,9 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
                                     "p-4 rounded-xl border transition-all",
                                     isSelected
                                         ? "bg-amber-50 border-amber-200 shadow-md ring-1 ring-amber-100"
-                                        : "bg-white border-slate-100"
+                                        : item.is_unofficial
+                                            ? "bg-slate-100 border-slate-200"
+                                            : "bg-white border-slate-100"
                                 )}
                             >
                                 <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
@@ -63,7 +80,7 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
                                         {/* Icon Removed (Moved inside badge) */}
 
                                         {/* Role Badge */}
-                                        {item.content_classification && (
+                                        {item.content_classification && item.content_classification !== '0' && (
                                             <span className={clsx(
                                                 "px-2 py-1 rounded text-xs font-bold flex items-center gap-1",
                                                 item.content_classification.includes('理事者') ? "bg-purple-100 text-purple-700" :
@@ -93,8 +110,21 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
                                 <div className="text-slate-700 text-sm leading-relaxed whitespace-pre-wrap">
                                     <HighlightedText text={item.body} highlight={query} />
                                 </div>
-                                <div className="mt-2 text-left pt-2 border-t border-slate-100/50">
+                                <div className="mt-2 flex items-center justify-between pt-2 border-t border-slate-100/50">
                                     <span className="text-[10px] text-slate-300 font-mono tracking-wider">ID: {item.id}</span>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => handleCopy(e, item.id)}
+                                        className={clsx(
+                                            "flex items-center justify-center p-1.5 rounded transition-colors",
+                                            copiedId === item.id
+                                                ? "bg-green-50 text-green-600 border border-green-200"
+                                                : "text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                                        )}
+                                        title={copiedId === item.id ? "コピー完了" : "この発言のURLをコピー"}
+                                    >
+                                        {copiedId === item.id ? <Check size={14} /> : <LinkIcon size={14} />}
+                                    </button>
                                 </div>
                             </div>
                         );

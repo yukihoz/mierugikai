@@ -4,12 +4,15 @@ export const loadData = async (url) => {
         try {
             const timestamp = new Date().getTime();
             const fetchPart = async (index) => {
-                // Handle both .csv and .json extensions in input url
-                const partName = `gijiroku_part_${index}.json`;
-                const partUrl = url.replace('gijiroku.csv', partName).replace('gijiroku.json', partName);
+                // Determine whether it's a preview or public chunk
+                const isPreview = url.includes('preview');
+                const partName = isPreview ? `gijiroku_preview_part_${index}.json` : `gijiroku_part_${index}.json`;
+                const partUrl = url.replace(/gijiroku[^/]*\.(json|csv)/, partName);
 
                 const response = await fetch(`${partUrl}?v=${timestamp}`);
                 if (!response.ok) return null;
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("text/html")) return null;
                 return response.json();
             };
 

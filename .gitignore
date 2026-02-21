@@ -24,6 +24,7 @@ dist-ssr
 *.sw?
 ~
 public/data/gijiroku.json
+public/data/gijiroku_preview*.json
 public/models/
 data/
 public/data/*.csv

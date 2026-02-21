@@ -20,7 +20,7 @@ export function RelatedKeywords({ data, query, onKeywordClick }) {
 
         const segmenter = new Intl.Segmenter("ja", { granularity: "word" });
         // Analyze a subset if data is too large to prevent freezing
-        const textToAnalyze = data.slice(0, 200).map(d => d.body).join("\n");
+        const textToAnalyze = data.slice(0, 200).map(d => d.body).filter(Boolean).join("\n");
         const segments = segmenter.segment(textToAnalyze);
 
         const counts = {};

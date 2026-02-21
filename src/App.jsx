@@ -11,7 +11,7 @@ import { TopSpeakers } from './components/TopSpeakers';
 import { RelatedKeywords } from './components/RelatedKeywords';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 50;
 
 function App() {
   const [data, setData] = useState([]);
@@ -42,7 +42,7 @@ function App() {
   // Load Data
   useEffect(() => {
     Promise.all([
-      loadData(`${import.meta.env.BASE_URL}data/gijiroku.json`),
+      loadData(`${import.meta.env.BASE_URL}data/${import.meta.env.DEV ? 'gijiroku_preview.json' : 'gijiroku.json'}`),
       loadData(`${import.meta.env.BASE_URL}data/speaker_meta.json`).catch(err => {
         console.warn("Failed to load speaker meta:", err);
         return {};
@@ -54,6 +54,22 @@ function App() {
         setData(dataWithIndex);
         setSpeakerMeta(meta);
         setLoading(false);
+
+        // Check if there's an ID in the URL for direct linking
+        const pathParts = window.location.pathname.split('/');
+        const lastPart = pathParts[pathParts.length - 1];
+        if (/^[HT]\d+$/.test(lastPart)) {
+          const record = dataWithIndex.find(d => d.id === lastPart);
+          if (record) {
+            setSearchTerm(lastPart);
+            setActiveQuery(lastPart);
+            // Also open the context modal to show the surrounding discussion
+            setSelectedContextItem(record);
+            const meetingItems = dataWithIndex.filter(d => d.title === record.title);
+            setContextItems(meetingItems);
+            setIsModalOpen(true);
+          }
+        }
       })
       .catch((err) => {
         console.error("Failed to load data:", err);
@@ -65,10 +81,17 @@ function App() {
   const options = useMemo(() => {
     if (!data.length) return { committees: [], categories: [], minYear: 2003, maxYear: 2025 };
 
-    const committees = [...new Set(data.map(d => d.type).filter(Boolean))].sort();
+    // Filter out unofficial records for the lists (Committee / Category)
+    // so they don't pollute the dropdowns.
+    const validDataForLists = data.filter(d => !d.is_unofficial);
+
+    const committees = [...new Set(validDataForLists.map(d => d.type).filter(Boolean))].sort();
 
     // Sort Categories (Speakers): Incumbent (Kana) > Former (Kana) > Others (Name)
-    const categories = [...new Set(data.map(d => d.category).filter(Boolean))].sort((a, b) => {
+    const categories = [...new Set(validDataForLists.map(d => d.category).filter(c => c && c !== '0'))].sort((a, b) => {
+      if (!a) return 1;
+      if (!b) return -1;
+
       const metaA = speakerMeta[a];
       const metaB = speakerMeta[b];
 
@@ -101,6 +124,13 @@ function App() {
   // Filtering Logic
   const filteredData = useMemo(() => {
     return data.filter(item => {
+      // Hide unofficial data from general search unless exact ID is searched
+      if (item.is_unofficial) {
+        if (!activeQuery || item.id !== activeQuery) {
+          return false;
+        }
+      }
+
       // 1. Text Search - Use activeQuery instead of searchTerm
       if (activeQuery) {
         const normalize = (str) => str ? str.normalize('NFKC').toLowerCase() : '';
@@ -202,16 +232,34 @@ function App() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="flex items-center gap-3">
-              <img src={`${import.meta.env.BASE_URL}mielogo.png`} alt="みえる議会(仮) - 中央区" className="h-10 md:h-12 w-auto object-contain" />
-              <span className="text-xl md:text-2xl font-extrabold text-slate-800 whitespace-nowrap">
-                みえる議会(仮) - 中央区
+            <h1
+              className="flex items-center gap-3 cursor-pointer group"
+              onClick={() => {
+                setSearchTerm('');
+                setActiveQuery('');
+                setFilters({
+                  committee: '',
+                  category: '',
+                  yearRange: [2015, options.maxYear || 2025],
+                  sort: 'desc'
+                });
+                setCurrentPage(1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Clean the URL if it contains an ID
+                if (window.history.pushState) {
+                  window.history.pushState({}, '', import.meta.env.BASE_URL);
+                }
+              }}
+            >
+              <img src={`${import.meta.env.BASE_URL}mielogo.png`} alt="みえる議会(仮) - 中央区" className="h-10 md:h-12 w-auto object-contain group-hover:opacity-80 transition-opacity" />
+              <span className="text-xl md:text-2xl font-extrabold text-slate-800 whitespace-nowrap group-hover:text-primary-600 transition-colors">
+                みえる議会 - 中央区
               </span>
             </h1>
           </div>
           <div className="text-right">
             <div className="text-xs font-medium text-slate-500 mb-0.5">
-              収録範囲(2003/5/27 - 2025/7/3)
+              <p className="text-gray-500 text-sm mb-4">収録範囲(2003/5/27 - 2025/10/16)</p>
             </div>
             <div className="text-xs font-bold text-primary-600">
               {loading ? 'Loading...' : `${data.length.toLocaleString()} records`}

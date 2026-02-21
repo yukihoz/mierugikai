@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Filter, X, ChevronDown, ChevronUp } from 'lucide-react';
-import { YearRangeSlider } from './YearRangeSlider';
 
 export function FilterPanel({
     filters,
@@ -62,15 +61,42 @@ export function FilterPanel({
                         )}
                     </div>
 
-                    {/* Year Range Slider - Full Width */}
-                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                        <label className="block text-sm font-medium text-slate-600 mb-1">対象期間 (年度)</label>
-                        <YearRangeSlider
-                            min={minYear}
-                            max={maxYear}
-                            value={currentRange}
-                            onChange={handleRangeChange}
-                        />
+                    {/* Year Range Dropdowns */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-600 mb-1">開始年度</label>
+                            <select
+                                value={currentRange[0]}
+                                onChange={(e) => {
+                                    const newStart = parseInt(e.target.value, 10);
+                                    // If new start is after current end, adjust end to match start
+                                    const newEnd = newStart > currentRange[1] ? newStart : currentRange[1];
+                                    handleRangeChange([newStart, newEnd]);
+                                }}
+                                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            >
+                                {Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i).map(year => (
+                                    <option key={`start-${year}`} value={year}>{year}年度</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-600 mb-1">終了年度</label>
+                            <select
+                                value={currentRange[1]}
+                                onChange={(e) => {
+                                    const newEnd = parseInt(e.target.value, 10);
+                                    // If new end is before current start, adjust start to match end
+                                    const newStart = newEnd < currentRange[0] ? newEnd : currentRange[0];
+                                    handleRangeChange([newStart, newEnd]);
+                                }}
+                                className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            >
+                                {Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i).map(year => (
+                                    <option key={`end-${year}`} value={year}>{year}年度</option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

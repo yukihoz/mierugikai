@@ -1,5 +1,6 @@
 export const HighlightedText = ({ text, highlight, truncate = false }) => {
-    if (!text) return null;
+    if (!text || typeof text !== 'string') return null;
+
     if (!highlight && !truncate) return <>{text}</>;
     if (!highlight && truncate) {
         // No highlight, just truncate
