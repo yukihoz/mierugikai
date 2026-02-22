@@ -96,12 +96,20 @@ async function processData() {
             // Use existing ID if available, otherwise generate
             const id = record['ID'] || `H${(index + 1).toString().padStart(8, '0')}`;
 
+            // Format the body text: Replace single newlines with double newlines
+            let rawBody = record['発言内容'] || '';
+            let formattedBody = '';
+            if (rawBody) {
+                const normalized = rawBody.replace(/\r\n/g, '\n');
+                formattedBody = normalized.replace(/\n+/g, '\n\n');
+            }
+
             return {
                 id: id,
                 title: record['会議の名称'] || '',
                 speaker: record['発言者'] || '',
                 category: record['人分類'] || 'その他',
-                body: record['発言内容'] || '',
+                body: formattedBody,
                 year: year,
                 date: dateStr,
                 type: record['委員会/本会議名称'] || record['委員会名称'] || '',
