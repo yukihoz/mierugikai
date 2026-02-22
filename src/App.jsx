@@ -31,6 +31,8 @@ function App() {
   const [contextItems, setContextItems] = useState([]);
   const [selectedContextItem, setSelectedContextItem] = useState(null);
 
+  // Scroll to Top State
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const [filters, setFilters] = useState({
     committee: '',
@@ -226,6 +228,25 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Scroll to Top functionality
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button if scrolled down more than 300px
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20">
       {/* Header */}
@@ -416,6 +437,25 @@ function App() {
         <br />
         正確性を期しておりますが正確な情報は中央区議会のwebサイトをご覧ください。
       </footer>
+
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-6 right-6 lg:right-10 z-50 transition-all duration-300 ${showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
+          }`}
+        aria-label="ページ上部へ戻る"
+      >
+        <div className="relative group">
+          <img
+            src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`}
+            alt=""
+            className="absolute -top-14 -left-6 w-16 h-auto object-contain transition-transform group-hover:-translate-y-2 duration-300 drop-shadow-sm"
+          />
+          <div className="bg-primary-500 hover:bg-primary-600 text-white p-3 rounded-full shadow-lg transition-colors border-2 border-white">
+            <ArrowUp size={24} />
+          </div>
+        </div>
+      </button>
 
     </div>
   );
