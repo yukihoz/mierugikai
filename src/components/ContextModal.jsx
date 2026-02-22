@@ -37,11 +37,11 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
                 className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col mt-12"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Hanging Character */}
+                {/* Resting Character */}
                 <img
-                    src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`}
+                    src={`${import.meta.env.BASE_URL}images/gijie_nekorobu.png`}
                     alt=""
-                    className="absolute -top-14 right-8 md:right-16 h-16 w-auto object-contain rotate-180 z-10 drop-shadow-md origin-bottom animate-swing"
+                    className="absolute -top-16 right-8 md:right-16 h-20 w-auto object-contain z-10 drop-shadow-md"
                 />
 
                 {/* Header */}
