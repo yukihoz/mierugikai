@@ -441,19 +441,16 @@ function App() {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-6 right-6 lg:right-10 z-50 transition-all duration-300 ${showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
+        className={`fixed bottom-6 right-6 lg:right-10 z-50 transition-all duration-300 group ${showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
           }`}
         aria-label="ページ上部へ戻る"
       >
-        <div className="relative group">
+        <div className="relative flex items-center justify-center w-14 h-14 bg-white hover:bg-slate-50 border-2 border-primary-400 rounded-full shadow-lg transition-colors overflow-hidden">
           <img
             src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`}
-            alt=""
-            className="absolute -top-14 -left-6 w-16 h-auto object-contain transition-transform group-hover:-translate-y-2 duration-300 drop-shadow-sm"
+            alt="上へ"
+            className="w-10 h-10 object-contain transition-transform group-hover:-translate-y-1 duration-300 pt-2"
           />
-          <div className="bg-primary-500 hover:bg-primary-600 text-white p-3 rounded-full shadow-lg transition-colors border-2 border-white">
-            <ArrowUp size={24} />
-          </div>
         </div>
       </button>
 
