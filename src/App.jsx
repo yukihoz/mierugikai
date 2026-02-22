@@ -449,7 +449,7 @@ function App() {
           <img
             src={`${import.meta.env.BASE_URL}images/gijie_yajirushi.png`}
             alt="上へ"
-            className="w-full h-full object-contain scale-[1.4] transition-transform group-hover:-translate-y-1 duration-300 mt-3"
+            className="w-full h-full object-contain scale-[1.3] transition-transform group-hover:-translate-y-1 duration-300"
           />
         </div>
       </button>
