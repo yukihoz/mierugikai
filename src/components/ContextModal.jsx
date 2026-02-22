@@ -34,18 +34,18 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
             onClick={onClose}
         >
             <div
-                className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col mt-12"
+                className="relative bg-white rounded-3xl shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col mt-12"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Resting Character */}
                 <img
-                    src={`${import.meta.env.BASE_URL}images/gijie_nekorobu4.png`}
+                    src={`${import.meta.env.BASE_URL}images/gijie_nekorobu5.png`}
                     alt=""
                     className="absolute bottom-full right-8 md:right-16 h-24 w-auto object-contain z-10 drop-shadow-md translate-y-5"
                 />
 
                 {/* Header */}
-                <div className="p-4 border-b border-slate-100 flex items-start justify-between bg-slate-50">
+                <div className="p-4 border-b border-slate-100 flex items-start justify-between bg-slate-50 rounded-t-3xl">
                     <div>
                         <h3 className="font-bold text-slate-800 text-lg line-clamp-1">{selectedItem.title}</h3>
                         <div className="flex items-center gap-2 text-sm text-slate-500 mt-1">
@@ -64,7 +64,7 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
                 </div>
 
                 {/* Body */}
-                <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50">
+                <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50 rounded-b-3xl">
                     {contextItems.map((item, i) => {
                         const isSelected = item === selectedItem;
                         return (
