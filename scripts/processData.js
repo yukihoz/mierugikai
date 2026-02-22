@@ -12,7 +12,8 @@ const inputFiles = [
     // { path: path.join(__dirname, '../data/kugikai_data2011-2025mid-FIX.csv'), encoding: 'utf8' },
     // Maintenance CSV
     // Maintenance CSV
-    { path: path.join(__dirname, '../data/combined_master_20260131.csv'), encoding: 'utf8' }
+    { path: path.join(__dirname, '../data/combined_master_20260131.csv'), encoding: 'utf8' },
+    { path: path.join(__dirname, '../data/sabun20260222.csv'), encoding: 'utf8' }
 ];
 const outputFile = path.join(__dirname, '../public/data/gijiroku.json');
 
