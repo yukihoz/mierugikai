@@ -67,7 +67,7 @@ try {
         return {
             '会議の名称': record['会議の名称'] || '',
             '発言者': record['発言者'] || '',
-            '人分類': '', // Default empty
+            '人分類': record['人分類'] || '',
             '発言内容': record['発言内容'] || '',
             '年度': nendo,
             '月日': dateStr,
