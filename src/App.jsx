@@ -311,7 +311,6 @@ function App() {
                     <div className="w-1.5 h-8 bg-yellow-400 rounded-full"></div>
                     <h2 className="text-xl font-bold text-slate-800">検索・分析結果</h2>
                   </div>
-                  <img src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`} alt="" className="hidden sm:block absolute right-4 bottom-0 h-16 w-auto object-contain" />
                 </div>
 
                 {/* Analysis Dashboard (Only Show if Searching) */}
@@ -443,7 +442,7 @@ function App() {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-6 right-6 lg:right-10 z-50 transition-all duration-300 group ${showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
+        className={`fixed bottom-6 right-6 lg:right-10 z-50 transition-all duration-300 group ${showScrollTop && !isModalOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16 pointer-events-none'
           }`}
         aria-label="ページ上部へ戻る"
       >

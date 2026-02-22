@@ -34,9 +34,16 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
             onClick={onClose}
         >
             <div
-                className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden"
+                className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col mt-12"
                 onClick={(e) => e.stopPropagation()}
             >
+                {/* Hanging Character */}
+                <img
+                    src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`}
+                    alt=""
+                    className="absolute -top-14 right-8 md:right-16 h-16 w-auto object-contain rotate-180 z-10 drop-shadow-md origin-bottom animate-swing"
+                />
+
                 {/* Header */}
                 <div className="p-4 border-b border-slate-100 flex items-start justify-between bg-slate-50">
                     <div>
