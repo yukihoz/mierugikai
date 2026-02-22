@@ -407,7 +407,7 @@ function App() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-20 text-slate-400">
-                <img src={`${import.meta.env.BASE_URL}images/gijie_nekorobu.png`} alt="条件を指定して検索してください" className="h-28 md:h-36 w-auto object-contain mb-8 opacity-80 transition-transform hover:scale-105 duration-300" />
+                <img src={`${import.meta.env.BASE_URL}images/gijie_nekorobu2.png`} alt="条件を指定して検索してください" className="h-28 md:h-36 w-auto object-contain mb-8 opacity-80 transition-transform hover:scale-105 duration-300" />
                 <p className="text-lg font-medium text-slate-500">条件を指定して検索してください</p>
               </div>
             )}
