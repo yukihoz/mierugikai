@@ -445,11 +445,11 @@ function App() {
           }`}
         aria-label="ページ上部へ戻る"
       >
-        <div className="relative flex items-center justify-center w-14 h-14 bg-white hover:bg-slate-50 border-2 border-primary-400 rounded-full shadow-lg transition-colors overflow-hidden">
+        <div className="relative flex items-center justify-center w-16 h-16 md:w-18 md:h-18 bg-white hover:bg-slate-50 border-2 border-primary-400 rounded-full shadow-lg transition-colors overflow-hidden">
           <img
             src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`}
             alt="上へ"
-            className="w-10 h-10 object-contain transition-transform group-hover:-translate-y-1 duration-300 pt-2"
+            className="w-full h-full object-contain scale-[1.4] transition-transform group-hover:-translate-y-1 duration-300 mt-3"
           />
         </div>
       </button>
