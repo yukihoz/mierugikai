@@ -39,9 +39,9 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
             >
                 {/* Resting Character */}
                 <img
-                    src={`${import.meta.env.BASE_URL}images/gijie_nekorobu.png`}
+                    src={`${import.meta.env.BASE_URL}images/gijie_sakadachi2.png`}
                     alt=""
-                    className="absolute -top-16 right-8 md:right-16 h-20 w-auto object-contain z-10 drop-shadow-md"
+                    className="absolute bottom-full right-8 md:right-16 h-20 w-auto object-contain z-10 drop-shadow-md mb-[-1px]"
                 />
 
                 {/* Header */}

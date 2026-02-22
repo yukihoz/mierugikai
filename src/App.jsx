@@ -357,7 +357,7 @@ function App() {
                         <span className="w-1 h-6 bg-blue-400 rounded-full"></span>
                         関連キーワード (Top 10)
                       </h3>
-                      <img src={`${import.meta.env.BASE_URL}images/gijie_sakadachi2.png`} alt="" className="hidden sm:block absolute right-8 bottom-0 h-14 w-auto object-contain" />
+                      <img src={`${import.meta.env.BASE_URL}images/gijie_sakadachi.png`} alt="" className="hidden sm:block absolute right-8 bottom-0 h-14 w-auto object-contain" />
                     </div>
                     <div className="border border-slate-100 rounded-xl shadow-sm bg-white">
                       <RelatedKeywords
