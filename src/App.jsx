@@ -252,8 +252,7 @@ function App() {
               }}
             >
               <div className="flex items-end gap-2 md:gap-3">
-                <img src={`${import.meta.env.BASE_URL}mielogo.png`} alt="みえる議会 - 中央区" className="h-10 md:h-12 w-auto object-contain group-hover:opacity-80 transition-opacity" />
-                <img src={`${import.meta.env.BASE_URL}images/gijie_hirogeru.png`} alt="" className="hidden sm:block h-12 md:h-16 w-auto object-contain -ml-2 pb-1" />
+                <img src={`${import.meta.env.BASE_URL}images/gijie_hirogeru.png`} alt="みえる議会 - 中央区" className="h-12 md:h-16 w-auto object-contain pb-1 transition-transform group-hover:scale-105 duration-300" />
                 <span className="text-xl md:text-2xl font-extrabold text-slate-800 whitespace-nowrap group-hover:text-primary-600 transition-colors pb-1">
                   みえる議会 - 中央区
                 </span>

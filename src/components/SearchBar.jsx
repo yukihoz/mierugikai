@@ -12,7 +12,7 @@ export function SearchBar({ value, onChange, onSearch }) {
             <img
                 src={`${import.meta.env.BASE_URL}images/gijie_sagasu.png`}
                 alt="さがす"
-                className="absolute -top-14 left-4 h-16 w-auto object-contain z-10 transition-transform hover:-translate-y-1 hover:rotate-3 duration-300"
+                className="absolute -top-14 right-4 h-16 w-auto object-contain z-10 transition-transform hover:-translate-y-1 hover:-rotate-3 duration-300"
             />
             <div className="relative flex items-center z-20">
                 <input
