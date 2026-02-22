@@ -280,14 +280,6 @@ function App() {
               </div>
             </h1>
           </div>
-          <div className="text-right">
-            <div className="text-xs font-medium text-slate-500 mb-0.5">
-              <p className="text-gray-500 text-sm mb-4">収録範囲(2003/5/27 - 2025/10/16)</p>
-            </div>
-            <div className="text-xs font-bold text-primary-600">
-              {loading ? 'Loading...' : `${data.length.toLocaleString()} records`}
-            </div>
-          </div>
         </div>
       </header>
 
@@ -437,6 +429,16 @@ function App() {
         <br />
         正確性を期しておりますが正確な情報は中央区議会のwebサイトをご覧ください。
       </footer>
+
+      {/* Date Range and Record Count (Fixed Bottom Right) */}
+      <div className="fixed bottom-1 right-2 lg:right-6 z-40 text-right opacity-80 pointer-events-none drop-shadow-sm flex flex-col items-end gap-0.5">
+        <div className="text-[10px] sm:text-xs font-medium text-slate-500 bg-white/80 px-1.5 py-0.5 rounded backdrop-blur-sm">
+          収録範囲(2003/5/27 - 2025/10/16)
+        </div>
+        <div className="text-[10px] sm:text-xs font-bold text-primary-600 bg-white/80 px-1.5 py-0.5 rounded backdrop-blur-sm">
+          {loading ? 'Loading...' : `${data.length.toLocaleString()} records`}
+        </div>
+      </div>
 
       {/* Scroll to Top Button */}
       <button
