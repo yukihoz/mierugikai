@@ -251,10 +251,13 @@ function App() {
                 }
               }}
             >
-              <img src={`${import.meta.env.BASE_URL}mielogo.png`} alt="みえる議会(仮) - 中央区" className="h-10 md:h-12 w-auto object-contain group-hover:opacity-80 transition-opacity" />
-              <span className="text-xl md:text-2xl font-extrabold text-slate-800 whitespace-nowrap group-hover:text-primary-600 transition-colors">
-                みえる議会 - 中央区
-              </span>
+              <div className="flex items-end gap-2 md:gap-3">
+                <img src={`${import.meta.env.BASE_URL}mielogo.png`} alt="みえる議会 - 中央区" className="h-10 md:h-12 w-auto object-contain group-hover:opacity-80 transition-opacity" />
+                <img src={`${import.meta.env.BASE_URL}images/gijie_hirogeru.png`} alt="" className="hidden sm:block h-12 md:h-16 w-auto object-contain -ml-2 pb-1" />
+                <span className="text-xl md:text-2xl font-extrabold text-slate-800 whitespace-nowrap group-hover:text-primary-600 transition-colors pb-1">
+                  みえる議会 - 中央区
+                </span>
+              </div>
             </h1>
           </div>
           <div className="text-right">
@@ -291,9 +294,12 @@ function App() {
             {/* Results Section - Distinct Design */}
             {(activeQuery || filters.committee || filters.category || filters.yearRange) ? (
               <div className="mt-12 pt-8 border-t-2 border-slate-100">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-1.5 h-8 bg-yellow-400 rounded-full"></div>
-                  <h2 className="text-xl font-bold text-slate-800">検索・分析結果</h2>
+                <div className="flex items-end justify-between mb-6 relative border-b border-slate-100 pb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-8 bg-yellow-400 rounded-full"></div>
+                    <h2 className="text-xl font-bold text-slate-800">検索・分析結果</h2>
+                  </div>
+                  <img src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`} alt="" className="hidden sm:block absolute right-4 bottom-0 h-16 w-auto object-contain" />
                 </div>
 
                 {/* Analysis Dashboard (Only Show if Searching) */}
@@ -335,10 +341,13 @@ function App() {
 
                   {/* Use RelatedKeywords instead of TopicCloud */}
                   <div className="mb-12">
-                    <h3 className="text-lg font-bold text-slate-800 mb-4 px-2 flex items-center gap-2">
-                      <span className="w-1 h-6 bg-blue-400 rounded-full"></span>
-                      関連キーワード (Top 10)
-                    </h3>
+                    <div className="flex items-end justify-between mb-4 relative">
+                      <h3 className="text-lg font-bold text-slate-800 px-2 flex items-center gap-2">
+                        <span className="w-1 h-6 bg-blue-400 rounded-full"></span>
+                        関連キーワード (Top 10)
+                      </h3>
+                      <img src={`${import.meta.env.BASE_URL}images/gijie_sakadachi.png`} alt="" className="hidden sm:block absolute right-8 bottom-0 h-14 w-auto object-contain" />
+                    </div>
                     <div className="border border-slate-100 rounded-xl shadow-sm bg-white">
                       <RelatedKeywords
                         data={filteredData}
@@ -386,8 +395,9 @@ function App() {
                 />
               </div>
             ) : (
-              <div className="text-center py-20 text-slate-400">
-                条件を指定して検索してください
+              <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+                <img src={`${import.meta.env.BASE_URL}images/gijie_nekorobu.png`} alt="条件を指定して検索してください" className="h-28 md:h-36 w-auto object-contain mb-8 opacity-80 transition-transform hover:scale-105 duration-300" />
+                <p className="text-lg font-medium text-slate-500">条件を指定して検索してください</p>
               </div>
             )}
 

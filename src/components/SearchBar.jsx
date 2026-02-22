@@ -8,8 +8,13 @@ export function SearchBar({ value, onChange, onSearch }) {
     };
 
     return (
-        <div className="relative w-full max-w-2xl mx-auto mb-8">
-            <div className="relative flex items-center">
+        <div className="relative w-full max-w-2xl mx-auto mb-8 mt-12">
+            <img
+                src={`${import.meta.env.BASE_URL}images/gijie_sagasu.png`}
+                alt="さがす"
+                className="absolute -top-14 left-4 h-16 w-auto object-contain z-10 transition-transform hover:-translate-y-1 hover:rotate-3 duration-300"
+            />
+            <div className="relative flex items-center z-20">
                 <input
                     type="text"
                     value={value}
