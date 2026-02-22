@@ -251,9 +251,9 @@ function App() {
                 }
               }}
             >
-              <div className="flex items-end gap-2 md:gap-3">
-                <img src={`${import.meta.env.BASE_URL}images/gijie_hirogeru.png`} alt="みえる議会 - 中央区" className="h-12 md:h-16 w-auto object-contain pb-1 transition-transform group-hover:scale-105 duration-300" />
-                <span className="text-xl md:text-2xl font-extrabold text-slate-800 whitespace-nowrap group-hover:text-primary-600 transition-colors pb-1">
+              <div className="flex items-center gap-1 md:gap-2">
+                <img src={`${import.meta.env.BASE_URL}images/gijie_hirogeru.png`} alt="みえる議会 - 中央区" className="h-12 md:h-16 w-auto object-contain transition-transform group-hover:scale-105 duration-300" />
+                <span className="text-xl md:text-2xl font-extrabold text-slate-800 whitespace-nowrap group-hover:text-primary-600 transition-colors">
                   みえる議会 - 中央区
                 </span>
               </div>
