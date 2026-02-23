@@ -88,8 +88,8 @@ export function ResultList({ results, query, onContextClick }) {
                     <div className="flex items-center justify-between pt-2 border-t border-slate-50">
                         {/* Meta Info (Bottom Left) */}
                         <div className="flex flex-wrap items-center gap-2">
-                            <span className="flex items-center gap-1 text-[10px] text-slate-500">
-                                <Calendar size={12} />
+                            <span className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-500 whitespace-nowrap shrink-0">
+                                <Calendar size={13} className="shrink-0" />
                                 {item.date} <span className="text-slate-300">|</span> {item.type}
                             </span>
                             {item.category && (
