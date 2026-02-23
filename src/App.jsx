@@ -382,13 +382,13 @@ function App() {
                     </span>
                   </h3>
 
-                  <div className="flex items-center gap-3 relative">
+                  <div className="flex items-center relative">
                     <img
-                      src={`${import.meta.env.BASE_URL}images/gijie_sakadachi2.png`}
+                      src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`}
                       alt=""
                       className={clsx(
-                        "absolute -left-12 h-10 w-auto object-contain transition-transform duration-500 ease-in-out",
-                        filters.sort === 'desc' ? "translate-y-3" : "-translate-y-3"
+                        "absolute left-1/2 -ml-4 h-9 w-auto object-contain transition-transform duration-500 ease-in-out z-0 top-1/2 -mt-[18px]",
+                        filters.sort === 'desc' ? "translate-y-7" : "-translate-y-7"
                       )}
                     />
                     <button
