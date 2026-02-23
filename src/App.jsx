@@ -11,12 +11,15 @@ import { TopSpeakers } from './components/TopSpeakers';
 import { RelatedKeywords } from './components/RelatedKeywords';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import clsx from 'clsx';
+import { LoadingScreen } from './components/LoadingScreen';
+
 const ITEMS_PER_PAGE = 50;
 
 function App() {
   const [data, setData] = useState([]);
   const [speakerMeta, setSpeakerMeta] = useState({});
   const [loading, setLoading] = useState(true);
+  const [loadProgress, setLoadProgress] = useState(0);
 
   // Input state
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,7 +47,7 @@ function App() {
   // Load Data
   useEffect(() => {
     Promise.all([
-      loadData(`${import.meta.env.BASE_URL}data/${import.meta.env.DEV ? 'gijiroku_preview.json' : 'gijiroku.json'}`),
+      loadData(`${import.meta.env.BASE_URL}data/${import.meta.env.DEV ? 'gijiroku_preview.json' : 'gijiroku.json'}`, setLoadProgress),
       loadData(`${import.meta.env.BASE_URL}data/speaker_meta.json`).catch(err => {
         console.warn("Failed to load speaker meta:", err);
         return {};
@@ -284,7 +287,7 @@ function App() {
       </header>
 
       <main className="max-w-5xl mx-auto px-6 py-8">
-        {/* Removed center title block */}
+        {loading && <LoadingScreen progress={loadProgress} />}
 
         <SearchBar
           value={searchTerm}
