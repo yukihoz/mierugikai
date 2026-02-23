@@ -383,14 +383,20 @@ function App() {
                   </h3>
 
                   <div className="flex items-center relative">
-                    <img
-                      src={`${import.meta.env.BASE_URL}images/gijie_ageru.png`}
-                      alt=""
-                      className={clsx(
-                        "absolute left-1/2 -ml-4 h-9 w-auto object-contain transition-transform duration-500 ease-in-out z-0 top-1/2 -mt-[18px]",
-                        filters.sort === 'desc' ? "translate-y-7" : "-translate-y-7"
-                      )}
-                    />
+                    {/* Character rendered conditionally based on sort order */}
+                    {filters.sort === 'asc' ? (
+                      <img
+                        src={`${import.meta.env.BASE_URL}images/gijie_ue.png`}
+                        alt=""
+                        className="absolute left-1/2 -ml-4 h-9 w-auto object-contain z-0 bottom-full mb-0 transition-opacity duration-300"
+                      />
+                    ) : (
+                      <img
+                        src={`${import.meta.env.BASE_URL}images/gijie_shita.png`}
+                        alt=""
+                        className="absolute left-1/2 -ml-4 h-9 w-auto object-contain z-0 top-full mt-0 transition-opacity duration-300"
+                      />
+                    )}
                     <button
                       onClick={() => setFilters(prev => ({ ...prev, sort: prev.sort === 'desc' ? 'asc' : 'desc' }))}
                       className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium text-slate-700 relative z-10"
