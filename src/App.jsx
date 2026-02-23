@@ -10,7 +10,7 @@ import { Pagination } from './components/Pagination';
 import { TopSpeakers } from './components/TopSpeakers';
 import { RelatedKeywords } from './components/RelatedKeywords';
 import { ArrowDown, ArrowUp } from 'lucide-react';
-
+import clsx from 'clsx';
 const ITEMS_PER_PAGE = 50;
 
 function App() {
