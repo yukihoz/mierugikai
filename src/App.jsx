@@ -386,13 +386,13 @@ function App() {
                     {/* Character rendered conditionally based on sort order */}
                     {filters.sort === 'asc' ? (
                       <img
-                        src={`${import.meta.env.BASE_URL}images/gijie_ue.png`}
+                        src={`${import.meta.env.BASE_URL}images/gijie_ue2.png`}
                         alt=""
                         className="absolute left-1/2 -ml-4 h-9 w-auto object-contain z-0 bottom-full mb-0 transition-opacity duration-300"
                       />
                     ) : (
                       <img
-                        src={`${import.meta.env.BASE_URL}images/gijie_shita.png`}
+                        src={`${import.meta.env.BASE_URL}images/gijie_shita2.png`}
                         alt=""
                         className="absolute left-1/2 -ml-4 h-9 w-auto object-contain z-0 top-full mt-0 transition-opacity duration-300"
                       />
