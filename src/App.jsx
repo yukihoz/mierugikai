@@ -382,10 +382,18 @@ function App() {
                     </span>
                   </h3>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3 relative">
+                    <img
+                      src={`${import.meta.env.BASE_URL}images/gijie_sakadachi2.png`}
+                      alt=""
+                      className={clsx(
+                        "absolute -left-12 h-10 w-auto object-contain transition-transform duration-500 ease-in-out",
+                        filters.sort === 'desc' ? "translate-y-3" : "-translate-y-3"
+                      )}
+                    />
                     <button
                       onClick={() => setFilters(prev => ({ ...prev, sort: prev.sort === 'desc' ? 'asc' : 'desc' }))}
-                      className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium text-slate-700"
+                      className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium text-slate-700 relative z-10"
                     >
                       {filters.sort === 'desc' ? (
                         <ArrowDown size={16} className="text-yellow-600" />
