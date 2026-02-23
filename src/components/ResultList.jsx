@@ -60,10 +60,25 @@ export function ResultList({ results, query, onContextClick }) {
                             </span>
                         </div>
 
-                        {/* ID (Top Right) - Hidden on mobile */}
-                        <span className="hidden sm:block text-[10px] text-slate-300 font-mono tracking-wider ml-auto">
-                            ID: {item.id}
-                        </span>
+                        {/* ID and Copy Link (Top Right) */}
+                        <div className="flex items-center gap-2 ml-auto">
+                            <span className="hidden sm:block text-[10px] text-slate-300 font-mono tracking-wider">
+                                ID: {item.id}
+                            </span>
+                            <button
+                                type="button"
+                                onClick={(e) => handleCopy(e, item.id)}
+                                className={clsx(
+                                    "relative z-10 flex items-center justify-center p-1.5 border rounded-lg transition-colors shadow-sm shrink-0",
+                                    copiedId === item.id
+                                        ? "bg-green-50 border-green-200"
+                                        : "bg-slate-50 border-slate-200 hover:bg-slate-100"
+                                )}
+                                title={copiedId === item.id ? "コピー完了" : "この発言のURLをコピー"}
+                            >
+                                {copiedId === item.id ? <Check size={14} className="text-green-600" /> : <LinkIcon size={14} className="text-slate-500" />}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="text-slate-700 leading-relaxed text-base whitespace-pre-wrap mb-4">
@@ -78,27 +93,14 @@ export function ResultList({ results, query, onContextClick }) {
                                 {item.date} <span className="text-slate-300">|</span> {item.type}
                             </span>
                             {item.category && (
-                                <span className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
                                     <User size={12} className="text-slate-400" />
                                     {item.category}
                                 </span>
                             )}
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <button
-                                type="button"
-                                onClick={(e) => handleCopy(e, item.id)}
-                                className={clsx(
-                                    "relative z-10 flex items-center justify-center p-2 border rounded-lg transition-colors shadow-sm shrink-0",
-                                    copiedId === item.id
-                                        ? "bg-green-50 border-green-200"
-                                        : "bg-slate-50 border-slate-200 hover:bg-slate-100"
-                                )}
-                                title={copiedId === item.id ? "コピー完了" : "この発言のURLをコピー"}
-                            >
-                                {copiedId === item.id ? <Check size={16} className="text-green-600" /> : <LinkIcon size={16} className="text-slate-500" />}
-                            </button>
+                        <div className="flex items-center gap-2 ml-auto">
                             <button
                                 type="button"
                                 onClick={(e) => {
