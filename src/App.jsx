@@ -383,20 +383,24 @@ function App() {
                   </h3>
 
                   <div className="flex items-center relative">
-                    {/* Character rendered conditionally based on sort order */}
-                    {filters.sort === 'asc' ? (
-                      <img
-                        src={`${import.meta.env.BASE_URL}images/gijie_ue2.png`}
-                        alt=""
-                        className="absolute left-1/2 -ml-4 h-9 w-auto object-contain z-0 bottom-full mb-0 transition-opacity duration-300"
-                      />
-                    ) : (
-                      <img
-                        src={`${import.meta.env.BASE_URL}images/gijie_shita2.png`}
-                        alt=""
-                        className="absolute left-1/2 -ml-4 h-9 w-auto object-contain z-0 top-full mt-0 transition-opacity duration-300"
-                      />
-                    )}
+                    {/* Top Character (Oldest First) */}
+                    <img
+                      src={`${import.meta.env.BASE_URL}images/gijie_ue3.png`}
+                      alt=""
+                      className={clsx(
+                        "absolute left-6 h-9 w-auto object-contain z-0 bottom-full mb-0 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+                        filters.sort === 'asc' ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6 pointer-events-none"
+                      )}
+                    />
+                    {/* Bottom Character (Newest First) */}
+                    <img
+                      src={`${import.meta.env.BASE_URL}images/gijie_shita2.png`}
+                      alt=""
+                      className={clsx(
+                        "absolute left-6 h-9 w-auto object-contain z-0 top-full mt-0 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+                        filters.sort === 'desc' ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6 pointer-events-none"
+                      )}
+                    />
                     <button
                       onClick={() => setFilters(prev => ({ ...prev, sort: prev.sort === 'desc' ? 'asc' : 'desc' }))}
                       className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium text-slate-700 relative z-10"
