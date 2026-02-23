@@ -87,13 +87,15 @@ export function ResultList({ results, query, onContextClick }) {
 
                     <div className="flex items-center justify-between pt-2 border-t border-slate-50">
                         {/* Meta Info (Bottom Left) */}
-                        <div className="flex flex-wrap items-center gap-2">
-                            <span className="flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-500 whitespace-nowrap shrink-0">
+                        <div className="flex flex-wrap items-center gap-2 min-w-0 flex-1">
+                            <span className="inline-flex items-center gap-1.5 text-xs sm:text-[10px] text-slate-500 min-w-0">
                                 <Calendar size={13} className="shrink-0" />
-                                {item.date} <span className="text-slate-300">|</span> {item.type}
+                                <span className="truncate">
+                                    {item.date} <span className="mx-1 text-slate-300">|</span> {item.type}
+                                </span>
                             </span>
                             {item.category && (
-                                <span className="hidden sm:flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
                                     <User size={12} className="text-slate-400" />
                                     {item.category}
                                 </span>
