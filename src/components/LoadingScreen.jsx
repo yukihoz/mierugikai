@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import clsx from 'clsx';
 
 export function LoadingScreen({ progress }) {
     const [frame, setFrame] = useState(1);
@@ -19,13 +20,24 @@ export function LoadingScreen({ progress }) {
                 <div className="relative h-20 mb-2 w-full">
                     {/* Walking character */}
                     <div
-                        className="absolute bottom-0 transition-all duration-300 ease-out"
+                        className="absolute bottom-0 transition-all duration-300 ease-out h-20 w-20"
                         style={{ left: `calc(${safeProgress}% - 40px)` }}
                     >
                         <img
-                            src={`${import.meta.env.BASE_URL}images/gijie_walk${frame}.png`}
-                            alt="loading"
-                            className="h-20 w-auto object-contain drop-shadow-sm"
+                            src={`${import.meta.env.BASE_URL}images/gijie_walk1.png`}
+                            alt=""
+                            className={clsx(
+                                "absolute inset-0 h-20 w-auto object-contain drop-shadow-sm",
+                                frame === 1 ? "opacity-100" : "opacity-0"
+                            )}
+                        />
+                        <img
+                            src={`${import.meta.env.BASE_URL}images/gijie_walk2.png`}
+                            alt=""
+                            className={clsx(
+                                "absolute inset-0 h-20 w-auto object-contain drop-shadow-sm",
+                                frame === 2 ? "opacity-100" : "opacity-0"
+                            )}
                         />
                     </div>
                 </div>
