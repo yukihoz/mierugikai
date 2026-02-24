@@ -46,40 +46,67 @@ function App() {
 
   // Load Data
   useEffect(() => {
-    Promise.all([
-      loadData(`${import.meta.env.BASE_URL}data/${import.meta.env.DEV ? 'gijiroku_preview.json' : 'gijiroku.json'}`, setLoadProgress),
-      loadData(`${import.meta.env.BASE_URL}data/speaker_meta.json`).catch(err => {
-        console.warn("Failed to load speaker meta:", err);
-        return {};
-      })
-    ])
-      .then(([data, meta]) => {
-        // Assign an original index to each item to preserve stable secondary sort
-        const dataWithIndex = data.map((item, index) => ({ ...item, originalIndex: index }));
-        setData(dataWithIndex);
-        setSpeakerMeta(meta);
-        setLoading(false);
+    let directLinkProcessed = false;
 
-        // Check if there's an ID in the URL for direct linking
-        const pathParts = window.location.pathname.split('/');
-        const lastPart = pathParts[pathParts.length - 1];
-        if (/^[HT]\d+$/.test(lastPart)) {
-          const record = dataWithIndex.find(d => d.id === lastPart);
-          if (record) {
-            setSearchTerm(lastPart);
-            setActiveQuery(lastPart);
-            // Also open the context modal to show the surrounding discussion
-            setSelectedContextItem(record);
-            const meetingItems = dataWithIndex.filter(d => d.title === record.title);
-            setContextItems(meetingItems);
-            setIsModalOpen(true);
+    const fetchData = async () => {
+      try {
+        // 1. Fetch speaker meta first (it's small and fast)
+        const meta = await loadData(`${import.meta.env.BASE_URL}data/speaker_meta.json`).catch(err => {
+          console.warn("Failed to load speaker meta:", err);
+          return {};
+        });
+        setSpeakerMeta(meta);
+
+        // Helper to process data and check deep links
+        const handleDataUpdate = (incomingData, isInitial) => {
+          // Assign an original index to each item to preserve stable secondary sort
+          const dataWithIndex = incomingData.map((item, index) => ({ ...item, originalIndex: index }));
+          setData(dataWithIndex);
+
+          if (isInitial) {
+            setLoading(false);
           }
+
+          // Check if there's an ID in the URL for direct linking
+          if (!directLinkProcessed) {
+            const pathParts = window.location.pathname.split('/');
+            const lastPart = pathParts[pathParts.length - 1];
+            if (/^[HT]\d+$/.test(lastPart)) {
+              const record = dataWithIndex.find(d => d.id === lastPart);
+              if (record) {
+                setSearchTerm(lastPart);
+                setActiveQuery(lastPart);
+                // Also open the context modal to show the surrounding discussion
+                setSelectedContextItem(record);
+                const meetingItems = dataWithIndex.filter(d => d.title === record.title);
+                setContextItems(meetingItems);
+                setIsModalOpen(true);
+                directLinkProcessed = true;
+              }
+            } else {
+              directLinkProcessed = true; // Not a direct link format, skip future checking
+            }
+          }
+        };
+
+        // 2. Fetch main data progressively
+        const fullData = await loadData(
+          `${import.meta.env.BASE_URL}data/${import.meta.env.DEV ? 'gijiroku_preview.json' : 'gijiroku.json'}`,
+          setLoadProgress,
+          (initialData) => handleDataUpdate(initialData, true)
+        );
+
+        // 3. When full data finishes loading, update state with complete dataset
+        if (fullData) {
+          handleDataUpdate(fullData, false);
         }
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Failed to load data:", err);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   // Compute Statistics for Dropdowns (memoized)

@@ -1,10 +1,11 @@
-export const loadData = async (url, onProgress = () => { }) => {
+export const loadData = async (url, onProgress = () => { }, onInitialData = null) => {
     // Special handling for gijiroku data to support split files
     if (url.includes('gijiroku')) {
         try {
             const timestamp = new Date().getTime();
             let completed = 0;
             const totalParts = 20;
+            const initialParts = 8; // Roughly 10 years of recent data
 
             const fetchPart = async (index) => {
                 try {
@@ -20,15 +21,27 @@ export const loadData = async (url, onProgress = () => { }) => {
                     return await response.json();
                 } finally {
                     completed++;
-                    onProgress(Math.round((completed / totalParts) * 100));
+                    if (completed <= initialParts) {
+                        onProgress(Math.round((completed / initialParts) * 100));
+                    }
                 }
             };
 
-            // Fetch up to 20 parts in parallel (expecting parts 0 to ~15)
-            const promises = Array.from({ length: totalParts }, (_, i) => fetchPart(i));
-            const results = await Promise.all(promises);
+            // Phase 1: Initial Load (chunks 0-7)
+            const initialPromises = Array.from({ length: initialParts }, (_, i) => fetchPart(i));
+            const initialResults = await Promise.all(initialPromises);
+            const initialRecords = initialResults.filter(r => r !== null).flat();
 
-            const allRecords = results.filter(r => r !== null).flat();
+            if (onInitialData && initialRecords.length > 0) {
+                onInitialData(initialRecords);
+            }
+
+            // Phase 2: Background Load (remaining chunks)
+            const remainingPromises = Array.from({ length: totalParts - initialParts }, (_, i) => fetchPart(i + initialParts));
+            const remainingResults = await Promise.all(remainingPromises);
+            const remainingRecords = remainingResults.filter(r => r !== null).flat();
+
+            const allRecords = [...initialRecords, ...remainingRecords];
 
             if (allRecords.length > 0) {
                 return allRecords;
