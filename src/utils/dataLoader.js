@@ -5,16 +5,19 @@ export const loadData = async (url, onProgress = () => { }, onInitialData = null
             const timestamp = new Date().getTime();
             let completed = 0;
             const totalParts = 20;
-            const initialParts = 8; // Roughly 10 years of recent data
+            const initialParts = 2; // Immediate paint for the most recent 2-3 years
 
-            const fetchPart = async (index) => {
+            const fetchPart = async (index, isInitialPhase) => {
                 try {
                     // Determine whether it's a preview or public chunk
                     const isPreview = url.includes('preview');
                     const partName = isPreview ? `gijiroku_preview_part_${index}.json` : `gijiroku_part_${index}.json`;
                     const partUrl = url.replace(/gijiroku[^/]*\.(json|csv)/, partName);
 
-                    const response = await fetch(`${partUrl}?v=${timestamp}`);
+                    // Let browser cache naturally (ETag/304). Add fetch priority.
+                    const response = await fetch(partUrl, {
+                        priority: isInitialPhase ? 'high' : 'low'
+                    });
                     if (!response.ok) return null;
                     const contentType = response.headers.get("content-type");
                     if (contentType && contentType.includes("text/html")) return null;
@@ -27,8 +30,8 @@ export const loadData = async (url, onProgress = () => { }, onInitialData = null
                 }
             };
 
-            // Phase 1: Initial Load (chunks 0-7)
-            const initialPromises = Array.from({ length: initialParts }, (_, i) => fetchPart(i));
+            // Phase 1: Initial Load (chunks 0-1)
+            const initialPromises = Array.from({ length: initialParts }, (_, i) => fetchPart(i, true));
             const initialResults = await Promise.all(initialPromises);
             const initialRecords = initialResults.filter(r => r !== null).flat();
 
@@ -37,7 +40,7 @@ export const loadData = async (url, onProgress = () => { }, onInitialData = null
             }
 
             // Phase 2: Background Load (remaining chunks)
-            const remainingPromises = Array.from({ length: totalParts - initialParts }, (_, i) => fetchPart(i + initialParts));
+            const remainingPromises = Array.from({ length: totalParts - initialParts }, (_, i) => fetchPart(i + initialParts, false));
             const remainingResults = await Promise.all(remainingPromises);
             const remainingRecords = remainingResults.filter(r => r !== null).flat();
 
@@ -56,7 +59,7 @@ export const loadData = async (url, onProgress = () => { }, onInitialData = null
     const jsonUrl = url.endsWith('.json') ? url : url.replace('.csv', '.json');
 
     try {
-        const response = await fetch(`${jsonUrl}?v=${new Date().getTime()}`);
+        const response = await fetch(jsonUrl, { priority: 'high' });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
