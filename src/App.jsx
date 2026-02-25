@@ -65,18 +65,23 @@ function App() {
 
           // Check if there's an ID in the URL for direct linking
           if (!directLinkProcessed) {
-            const pathParts = window.location.pathname.split('/');
-            const lastPart = pathParts[pathParts.length - 1];
-            if (/^[HT]\d+$/.test(lastPart)) {
-              const record = dataWithIndex.find(d => d.id === lastPart);
+            // Find any segment in the pathname that looks like an ID (H... or T...)
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            const idPart = pathParts.find(part => /^[HT]\d+$/.test(part));
+
+            if (idPart) {
+              const record = dataWithIndex.find(d => d.id === idPart);
               if (record) {
-                setSearchTerm(lastPart);
-                setActiveQuery(lastPart);
+                setSearchTerm(idPart);
+                setActiveQuery(idPart);
                 // Also open the context modal to show the surrounding discussion
                 setSelectedContextItem(record);
                 const meetingItems = dataWithIndex.filter(d => d.title === record.title);
                 setContextItems(meetingItems);
                 setIsModalOpen(true);
+                directLinkProcessed = true;
+              } else if (isFinal) {
+                // If we finished loading all background chunks and STILL couldn't find it, give up so UI unblocks
                 directLinkProcessed = true;
               }
             } else {
@@ -85,10 +90,8 @@ function App() {
           }
 
           // Delay hiding the loading screen if we are still hunting for a deep linked ID
-          if (isInitial) {
-            if (directLinkProcessed) {
-              setLoading(false);
-            }
+          if (isInitial && directLinkProcessed) {
+            setLoading(false);
           }
           if (isFinal) {
             setLoading(false);
