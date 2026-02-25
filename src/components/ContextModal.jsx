@@ -17,14 +17,18 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
     };
 
     useEffect(() => {
-        if (isOpen && selectedItem && itemRefs.current[selectedItem.body]) {
-            // Scroll to the selected item
-            itemRefs.current[selectedItem.body].scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-            });
+        if (isOpen && selectedItem && contextItems.length > 0) {
+            // Give React a tick to paint the new contextItems array and attach refs
+            setTimeout(() => {
+                if (itemRefs.current[selectedItem.id]) {
+                    itemRefs.current[selectedItem.id].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center',
+                    });
+                }
+            }, 50);
         }
-    }, [isOpen, selectedItem]);
+    }, [isOpen, selectedItem, contextItems]);
 
     if (!isOpen || !selectedItem) return null;
 
@@ -70,7 +74,7 @@ export function ContextModal({ isOpen, onClose, selectedItem, contextItems, quer
                         return (
                             <div
                                 key={i}
-                                ref={(el) => (itemRefs.current[item.body] = el)}
+                                ref={(el) => (itemRefs.current[item.id] = el)}
                                 className={clsx(
                                     "p-4 rounded-xl border transition-all",
                                     isSelected

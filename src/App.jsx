@@ -58,14 +58,10 @@ function App() {
         setSpeakerMeta(meta);
 
         // Helper to process data and check deep links
-        const handleDataUpdate = (incomingData, isInitial) => {
+        const handleDataUpdate = (incomingData, isInitial, isFinal = false) => {
           // Assign an original index to each item to preserve stable secondary sort
           const dataWithIndex = incomingData.map((item, index) => ({ ...item, originalIndex: index }));
           setData(dataWithIndex);
-
-          if (isInitial) {
-            setLoading(false);
-          }
 
           // Check if there's an ID in the URL for direct linking
           if (!directLinkProcessed) {
@@ -87,18 +83,28 @@ function App() {
               directLinkProcessed = true; // Not a direct link format, skip future checking
             }
           }
+
+          // Delay hiding the loading screen if we are still hunting for a deep linked ID
+          if (isInitial) {
+            if (directLinkProcessed) {
+              setLoading(false);
+            }
+          }
+          if (isFinal) {
+            setLoading(false);
+          }
         };
 
         // 2. Fetch main data progressively
         const fullData = await loadData(
           `${import.meta.env.BASE_URL}data/${import.meta.env.DEV ? 'gijiroku_preview.json' : 'gijiroku.json'}`,
           setLoadProgress,
-          (initialData) => handleDataUpdate(initialData, true)
+          (initialData) => handleDataUpdate(initialData, true, false)
         );
 
         // 3. When full data finishes loading, update state with complete dataset
         if (fullData) {
-          handleDataUpdate(fullData, false);
+          handleDataUpdate(fullData, false, true);
         }
       } catch (err) {
         console.error("Failed to load data:", err);
@@ -209,6 +215,14 @@ function App() {
   useEffect(() => {
     setCurrentPage(1);
   }, [activeQuery, filters]);
+
+  // Synchronize modal context items if background data finishes loading
+  useEffect(() => {
+    if (isModalOpen && selectedContextItem && data.length > 0) {
+      const meetingItems = data.filter(d => d.title === selectedContextItem.title);
+      setContextItems(prevItems => prevItems.length !== meetingItems.length ? meetingItems : prevItems);
+    }
+  }, [data.length, isModalOpen, selectedContextItem, data]);
 
   // Trend Data preparation
   const trendData = useMemo(() => {
