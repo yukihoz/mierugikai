@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Filter, X, ChevronDown, ChevronUp } from 'lucide-react';
 
 export function FilterPanel({
@@ -8,6 +8,12 @@ export function FilterPanel({
     speakerMeta
 }) {
     const [isOpen, setIsOpen] = useState(false); // Default collapsed
+    const [swingKey, setSwingKey] = useState(0);
+
+    // Trigger swing animation whenever panel opens or closes
+    useEffect(() => {
+        setSwingKey(prev => prev + 1);
+    }, [isOpen]);
 
     const handleRangeChange = (newRange) => {
         setFilters(prev => ({ ...prev, yearRange: newRange }));
@@ -33,13 +39,13 @@ export function FilterPanel({
                 {`
                 @keyframes swing {
                     0% { transform: rotate(0deg); }
-                    25% { transform: rotate(8deg); }
+                    25% { transform: rotate(15deg); }
                     50% { transform: rotate(0deg); }
-                    75% { transform: rotate(-8deg); }
+                    75% { transform: rotate(-15deg); }
                     100% { transform: rotate(0deg); }
                 }
                 .animate-swing {
-                    animation: swing 2s ease-in-out infinite;
+                    animation: swing 1s ease-in-out 2;
                 }
                 `}
             </style>
@@ -155,9 +161,10 @@ export function FilterPanel({
             {/* Swinging Character Image */}
             <div className="absolute top-full left-[40%] -translate-x-1/2 -mt-2 z-0">
                 <img
+                    key={swingKey}
                     src={`${import.meta.env.BASE_URL}images/gijie_burabura.png`}
                     alt=""
-                    className={`h-24 md:h-28 w-auto object-contain origin-top transition-transform duration-300 ${isOpen ? 'animate-swing' : ''}`}
+                    className="h-12 md:h-14 w-auto object-contain origin-top transition-transform duration-300 animate-swing"
                 />
             </div>
         </div>
