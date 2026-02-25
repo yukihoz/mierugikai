@@ -70,7 +70,7 @@ async function processData() {
             }
 
             // Fix Date format if it's Excel serial number
-            let dateStr = record['月日'] || '';
+            let dateStr = record['月日'] || record['年月日'] || '';
             if (dateStr && !isNaN(dateStr) && !dateStr.includes('/')) {
                 const serial = parseFloat(dateStr);
                 // Excel base date: Dec 30, 1899 (mostly)

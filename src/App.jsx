@@ -195,10 +195,11 @@ function App() {
   const sortedData = useMemo(() => {
     const sorted = [...filteredData];
     sorted.sort((a, b) => {
-      if (filters.sort === 'asc') {
-        return a.originalIndex - b.originalIndex;
+      // originalIndex 0 is the newest (descending by default from JSON file)
+      if (filters.sort === 'desc') {
+        return a.originalIndex - b.originalIndex; // Keep newest first
       } else {
-        return b.originalIndex - a.originalIndex;
+        return b.originalIndex - a.originalIndex; // Reverse to oldest first
       }
     });
     return sorted;
