@@ -172,8 +172,15 @@ function App() {
         }
       }
 
-      // 1. Text Search - Use activeQuery instead of searchTerm
+      // 1. Text Search & Exact ID Match Bypass
       if (normalizedQuery) {
+        const exactIdMatch = normalize(item.id) === normalizedQuery;
+
+        // If it's an exact ID match (like a direct URL link), bypass all other text & dropdown filters
+        if (exactIdMatch) {
+          return true;
+        }
+
         const matchBody = normalize(item.body).includes(normalizedQuery);
         const matchSpeaker = normalize(item.speaker).includes(normalizedQuery);
         const matchId = normalize(item.id).includes(normalizedQuery);
