@@ -155,6 +155,9 @@ function App() {
 
   // Filtering Logic
   const filteredData = useMemo(() => {
+    const normalize = (str) => str ? str.normalize('NFKC').toLowerCase() : '';
+    const normalizedQuery = activeQuery ? normalize(activeQuery) : '';
+
     return data.filter(item => {
       // Hide unofficial data from general search unless exact ID is searched
       if (item.is_unofficial) {
@@ -164,13 +167,10 @@ function App() {
       }
 
       // 1. Text Search - Use activeQuery instead of searchTerm
-      if (activeQuery) {
-        const normalize = (str) => str ? str.normalize('NFKC').toLowerCase() : '';
-        const q = normalize(activeQuery);
-
-        const matchBody = normalize(item.body).includes(q);
-        const matchSpeaker = normalize(item.speaker).includes(q);
-        const matchId = normalize(item.id).includes(q);
+      if (normalizedQuery) {
+        const matchBody = normalize(item.body).includes(normalizedQuery);
+        const matchSpeaker = normalize(item.speaker).includes(normalizedQuery);
+        const matchId = normalize(item.id).includes(normalizedQuery);
 
         if (!matchBody && !matchSpeaker && !matchId) return false;
       }
@@ -237,15 +237,14 @@ function App() {
 
   const openContext = (item) => {
     setSelectedContextItem(item);
+    setContextItems([]); // Clear previous items immediately
+    setIsModalOpen(true); // Paint the modal first
 
-    // Find all items belonging to the same meeting
-    // Matching by Year, Date, and Meeting Name (Title/Type)
-    // The dataset has 'title' (会議の名称) which is specific e.g., "平成15年第一回臨時会会議録（第1日　5月27日)"
-    // This is the best candidate for grouping a single meeting session.
-    const meetingItems = data.filter(d => d.title === item.title);
-
-    setContextItems(meetingItems);
-    setIsModalOpen(true);
+    // Defer the heavy O(N) lookup to prevent freezing the UI thread during modal open
+    setTimeout(() => {
+      const meetingItems = data.filter(d => d.title === item.title);
+      setContextItems(meetingItems);
+    }, 10);
   };
 
   const closeContext = () => {
