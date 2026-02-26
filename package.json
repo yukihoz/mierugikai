@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "rm -rf dist/models dist/data/gijiroku.json && wrangler deploy"
+    "deploy": "rm -rf dist/models dist/data/gijiroku.json dist/data/gijiroku_preview.json && wrangler deploy"
   },
   "dependencies": {
     "@mlc-ai/web-llm": "^0.2.80",
