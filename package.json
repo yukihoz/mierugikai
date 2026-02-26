@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mlc-ai/web-llm": "^0.2.80",
+    "canvas": "^3.2.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
     "lucide-react": "^0.562.0",
