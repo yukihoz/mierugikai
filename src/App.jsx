@@ -168,8 +168,8 @@ function App() {
     const normalizedQuery = activeQuery ? normalize(activeQuery) : '';
 
     return data.filter(item => {
-      // Hide unofficial data from general search unless exact ID is searched
-      if (item.is_unofficial) {
+      // Hide unofficial data from general search unless exact ID is searched OR we are in local development mode
+      if (item.is_unofficial && !import.meta.env.DEV) {
         if (!activeQuery || item.id !== activeQuery) {
           return false;
         }
