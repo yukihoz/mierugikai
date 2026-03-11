@@ -119,15 +119,28 @@ async function processData() {
             };
         });
 
-        // Sort by date descending (newest first)
+        // Sort by date descending (newest first). Since V8 sorting is stable now, but to be completely safe
+        // across environments and ensure CSV row order is strictly preserved for same-day records:
+        // We add an originalIndex during map, sort by date, then fallback to original index (ascending) to keep chronological flow of conversation within the same day.
+        optimizedData.forEach((d, i) => d._originalIndex = i);
+
         optimizedData.sort((a, b) => {
             const dateA = new Date(a.date).getTime();
             const dateB = new Date(b.date).getTime();
-            if (isNaN(dateA) && isNaN(dateB)) return 0;
+            if (isNaN(dateA) && isNaN(dateB)) return a._originalIndex - b._originalIndex;
             if (isNaN(dateA)) return 1;
             if (isNaN(dateB)) return -1;
-            return dateB - dateA;
+            
+            // Primary sort: Date descending (newest days first)
+            if (dateB !== dateA) {
+                return dateB - dateA;
+            }
+            // Secondary sort: Original index ascending (to keep questions and answers in natural chronological order on the same day)
+            return a._originalIndex - b._originalIndex;
         });
+
+        // Clean up the temporary index
+        optimizedData.forEach(d => delete d._originalIndex);
 
         // Write Preview JSON (includes unofficial data)
         const previewFile = path.join(__dirname, '../public/data/gijiroku_preview.json');
