@@ -211,11 +211,11 @@ function App() {
   const sortedData = useMemo(() => {
     const sorted = [...filteredData];
     sorted.sort((a, b) => {
-      // originalIndex 0 is the newest (descending by default from JSON file)
+      // originalIndex 0 is the oldest (2003) and the largest index is the newest (2026)
       if (filters.sort === 'desc') {
-        return a.originalIndex - b.originalIndex; // Keep newest first
+        return b.originalIndex - a.originalIndex; // Keep newest first (large index to top)
       } else {
-        return b.originalIndex - a.originalIndex; // Reverse to oldest first
+        return a.originalIndex - b.originalIndex; // Reverse to oldest first (small index to top)
       }
     });
     return sorted;
@@ -460,11 +460,16 @@ function App() {
                       className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium text-slate-700 relative z-10"
                     >
                       {filters.sort === 'desc' ? (
-                        <ArrowDown size={16} className="text-yellow-600" />
+                        <>
+                          <ArrowDown size={16} className="text-yellow-600" />
+                          新しい順
+                        </>
                       ) : (
-                        <ArrowUp size={16} className="text-yellow-600" />
+                        <>
+                          <ArrowUp size={16} className="text-yellow-600" />
+                          古い順
+                        </>
                       )}
-                      {filters.sort === 'desc' ? '新しい順' : '古い順'}
                     </button>
                   </div>
                 </div>
