@@ -45,6 +45,9 @@ def main():
     max_h_id = 0
     max_t_id = 0
     master_fieldnames = []
+    
+    # Keep track of existing records to prevent duplicates
+    existing_records = set()
 
     print(f"Reading master file: {MASTER_PATH}")
     try:
@@ -66,6 +69,11 @@ def main():
                     row['is_unofficial'] = '0' # Default to official for existing data
                 
                 master_rows.append(row)
+                
+                # Add to existing_records set
+                key = (row.get('会議の名称', ''), row.get('発言者', ''), row.get('発言内容', ''))
+                existing_records.add(key)
+                
                 if 'ID' in row and row['ID']:
                     if row['ID'].startswith('H'):
                         try:
@@ -157,6 +165,14 @@ def main():
                     
                     # Pass through is_unofficial
                     new_row['is_unofficial'] = row.get('is_unofficial', '0')
+
+                    # Verify if it's a duplicate
+                    key = (new_row.get('会議の名称', ''), new_row.get('発言者', ''), new_row.get('発言内容', ''))
+                    if key in existing_records:
+                        continue
+                        
+                    # Add to existing records so we don't add duplicates from within the sabun file itself
+                    existing_records.add(key)
 
                     sabun_rows.append(new_row)
 
