@@ -3,7 +3,7 @@ const { parse } = require('csv-parse/sync');
 const { stringify } = require('csv-stringify/sync');
 const path = require('path');
 
-const INPUT_FILE = path.join(__dirname, '../sabun20260220-2.csv');
+const INPUT_FILE = path.join(__dirname, '../sabun20260318.csv');
 const OUTPUT_FILE = path.join(__dirname, '../data/sabun_enriched.csv');
 
 function normalizeDate(dateStr) {

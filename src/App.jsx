@@ -40,7 +40,7 @@ function App() {
   const [filters, setFilters] = useState({
     committee: '',
     category: '', // Changed from speaker
-    yearRange: [2015, 2025], // Default: 2015-2025
+    yearRange: [2015, 2026], // Default: 2015-2026
     sort: 'desc' // Default: Newest first
   });
 
@@ -120,7 +120,7 @@ function App() {
 
   // Compute Statistics for Dropdowns (memoized)
   const options = useMemo(() => {
-    if (!data.length) return { committees: [], categories: [], minYear: 2003, maxYear: 2025 };
+    if (!data.length) return { committees: [], categories: [], minYear: 2003, maxYear: 2026 };
 
     // Filter out unofficial records for the lists (Committee / Category)
     // so they don't pollute the dropdowns.
@@ -157,7 +157,7 @@ function App() {
 
     const years = [...new Set(data.map(d => d.year).filter(Boolean))].sort((a, b) => b - a);
     const minYear = Math.min(...years) || 2003;
-    const maxYear = Math.max(...years) || 2025;
+    const maxYear = Math.max(...years) || 2026;
 
     return { committees, categories, minYear, maxYear };
   }, [data, speakerMeta]);
@@ -211,11 +211,11 @@ function App() {
   const sortedData = useMemo(() => {
     const sorted = [...filteredData];
     sorted.sort((a, b) => {
-      // originalIndex 0 is the oldest (2003) and the largest index is the newest (2026)
+      // JSON source is already newest-first, so originalIndex 0 is the newest (2026)
       if (filters.sort === 'desc') {
-        return b.originalIndex - a.originalIndex; // Keep newest first (large index to top)
+        return a.originalIndex - b.originalIndex; // Keep newest first (small index to top)
       } else {
-        return a.originalIndex - b.originalIndex; // Reverse to oldest first (small index to top)
+        return b.originalIndex - a.originalIndex; // Reverse to oldest first (large index to top)
       }
     });
     return sorted;
@@ -315,7 +315,7 @@ function App() {
                 setFilters({
                   committee: '',
                   category: '',
-                  yearRange: [2015, options.maxYear || 2025],
+                  yearRange: [2015, options.maxYear || 2026],
                   sort: 'desc'
                 });
                 setCurrentPage(1);
@@ -375,7 +375,7 @@ function App() {
                       {/* Reset Button for Trend Chart Drill-down */}
                       {filters.yearRange && filters.yearRange[0] === filters.yearRange[1] && (
                         <button
-                          onClick={() => setFilters(prev => ({ ...prev, yearRange: [2015, options.maxYear || 2025] }))}
+                          onClick={() => setFilters(prev => ({ ...prev, yearRange: [2015, options.maxYear || 2026] }))}
                           className="absolute top-2 right-2 z-10 px-2 py-1 bg-white/90 border border-slate-200 rounded shadow-sm text-xs text-slate-500 hover:text-primary-600 hover:bg-slate-50 transition-colors flex items-center gap-1"
                         >
                           <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
@@ -509,7 +509,7 @@ function App() {
       {/* Date Range and Record Count (Fixed Bottom Right) */}
       <div className="fixed bottom-1 right-2 lg:right-6 z-40 text-right opacity-80 pointer-events-none drop-shadow-sm flex flex-col items-end gap-0.5">
         <div className="text-[10px] sm:text-xs font-medium text-slate-500 bg-white/80 px-1.5 py-0.5 rounded backdrop-blur-sm">
-          収録範囲(2003/5/27 - 2025/10/16)
+          収録範囲(2003/5/27 - 2026/3/17)
         </div>
         <div className="text-[10px] sm:text-xs font-bold text-primary-600 bg-white/80 px-1.5 py-0.5 rounded backdrop-blur-sm">
           {loading ? 'Loading...' : `${data.length.toLocaleString()} records`}
