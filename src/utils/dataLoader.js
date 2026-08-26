@@ -1,10 +1,27 @@
+// Helper to unpack compact tuple format into objects
+const unpackData = (raw) => {
+    if (!raw) return [];
+    if (Array.isArray(raw)) return raw; // Already object array
+    if (raw.fields && Array.isArray(raw.rows)) {
+        const fields = raw.fields;
+        return raw.rows.map(row => {
+            const obj = {};
+            for (let i = 0; i < fields.length; i++) {
+                obj[fields[i]] = row[i];
+            }
+            return obj;
+        });
+    }
+    return [];
+};
+
 export const loadData = async (url, onProgress = () => { }, onInitialData = null) => {
     // Special handling for gijiroku data to support split files
     if (url.includes('gijiroku')) {
         try {
             const timestamp = new Date().getTime();
             let completed = 0;
-            const totalParts = 20;
+            const totalParts = 18;
             const initialParts = 2; // Immediate paint for the most recent 2-3 years
 
             const fetchPart = async (index, isInitialPhase) => {
@@ -12,16 +29,18 @@ export const loadData = async (url, onProgress = () => { }, onInitialData = null
                     // Determine whether it's a preview or public chunk
                     const isPreview = url.includes('preview');
                     const partName = isPreview ? `gijiroku_preview_part_${index}.json` : `gijiroku_part_${index}.json`;
-                    const partUrl = url.replace(/gijiroku[^/]*\.(json|csv)/, partName);
+                    const partUrl = url.replace(/gijiroku[^/]*\.(json|csv)/, partName) + `?v=${timestamp}`;
 
-                    // Let browser cache naturally (ETag/304). Add fetch priority.
+                    // Add cache buster to bypass aggressive browser caching during dev
                     const response = await fetch(partUrl, {
-                        priority: isInitialPhase ? 'high' : 'low'
+                        priority: isInitialPhase ? 'high' : 'low',
+                        cache: 'no-cache'
                     });
                     if (!response.ok) return null;
                     const contentType = response.headers.get("content-type");
                     if (contentType && contentType.includes("text/html")) return null;
-                    return await response.json();
+                    const json = await response.json();
+                    return unpackData(json);
                 } finally {
                     completed++;
                     if (completed <= initialParts) {
@@ -64,7 +83,7 @@ export const loadData = async (url, onProgress = () => { }, onInitialData = null
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        return data;
+        return unpackData(data);
 
     } catch (error) {
         console.error("Data load error", error);
